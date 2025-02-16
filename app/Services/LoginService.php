@@ -20,11 +20,11 @@ class LoginService
         if (Auth::attempt($credentials)) {
             $user = $this->userRepository->findByEmail($credentials['email']);
             $accessToken = $user->createToken('auth_token')->plainTextToken;
-            $refreshToken = $user->createToken('refresh_token', ['refresh'])->plainTextToken;
+            // $refreshToken = $user->createToken('refresh_token', ['refresh'])->plainTextToken;
 
             return [
-                'access_token' => $accessToken,
-                'refresh_token' => $refreshToken,
+                'user' => $user,
+                'token' => $accessToken,
             ];
         }
 

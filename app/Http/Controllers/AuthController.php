@@ -33,13 +33,13 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $token = $this->loginService->login($request->only('email', 'password'));
+        $authData = $this->loginService->login($request->only('email', 'password'));
 
-        if (!$token) {
+        if (!$authData) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 
-        return response()->json(['token' => $token]);
+        return response()->json(['user' => $authData['user'], 'token' => $authData['token']]);
     }
 
     public function refresh(Request $request)
@@ -56,5 +56,12 @@ class AuthController extends Controller
             'access_token' => $tokens['access_token'],
             'refresh_token' => $tokens['refresh_token'],
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+        $request->user()->currentAccessToken()->delete();
+
+        return response()->json(['message' => 'Logged out successfully']);
     }
 }

@@ -27,6 +27,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/table', [RestaurantTableController::class, 'postRestaurantTable']);
     Route::get('/restaurants', [RestaurantController::class, 'getRestaurants']);
     Route::get('/products', [ProductController::class, 'getProducts']);
+    Route::get('/products/category', [ProductController::class, 'getProductByCategory']);
+    Route::get('/products/filtered', [ProductController::class, 'getFilteredProducts']);
+    Route::get('/categories', [ProductController::class, 'getAllProductCategories']);
 });
 
 Route::get('/user', function (Request $request) {

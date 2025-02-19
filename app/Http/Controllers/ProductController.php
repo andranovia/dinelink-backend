@@ -17,11 +17,42 @@ class ProductController extends Controller
 
     public function getProducts(Request $request)
     {
+
         $restaurantId = $request->restaurantId;
         $products = $this->productService->getProducts($restaurantId);
 
         return response()->json(
             $products,
+            200
+        );
+    }
+
+    public function getFilteredProducts(Request $request)
+    {
+        $restaurantId = $request->restaurant_id;
+        $categoryId = $request->category_id;
+        $products = $this->productService->getProductByCategory($restaurantId, $categoryId);
+
+        return response()->json(
+            $products,
+            200
+        );
+    }
+
+    public function getAllProductCategories(Request $request)
+    {
+        $restaurantId = $request->restaurantId;
+        $products = $this->productService->getAllProductCategories($restaurantId);
+        $categoryData = [];
+
+        foreach ($products as $product) {
+            foreach ($product->categories as $category) {
+                $categoryData[$category->id] = $category;
+            }
+        }
+
+        return response()->json(
+            array_values($categoryData),
             200
         );
     }

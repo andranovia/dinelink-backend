@@ -9,6 +9,46 @@ class EloquentProductRepository implements ProductRepositoryInterface
 {
     public function getProducts(int $restaurantId)
     {
-        return Product::where('restaurant_id', $restaurantId)->get();
+        $products = Product::where('restaurant_id', $restaurantId)->with('categories')->get();
+        $productWithCategory = [];
+
+        if (!$products) {
+            return response()->json(['error' => 'Product not found'], 404);
+        }
+
+
+
+
+        foreach ($products as $product) {
+
+
+            $productData = [
+                "id" => $product->id,
+                "restaurant_id" => $product->restaurant_id,
+                "name" => $product->name,
+                "description" => $product->description,
+                "image" => $product->image,
+                "category_id" => $product->category_id,
+                "price" => $product->price,
+                "available" => $product->available,
+                "created_at" => $product->created_at,
+                "updated_at" => $product->updated_at,
+                "categories" => $product->categories,
+            ];
+
+            $productWithCategory[] = $productData;
+        }
+
+        return $productWithCategory;
+    }
+
+    public function getProductByCategory(int $restaurantId, int $categoryId)
+    {
+        return Product::where('restaurant_id', $restaurantId)->where('category_id', $categoryId)->get();
+    }
+
+    public function getAllProductCategories(int $restaurantId)
+    {
+        return Product::where('restaurant_id', $restaurantId)->with('categories')->get();
     }
 }

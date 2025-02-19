@@ -17,4 +17,14 @@ class ProductService
     {
         return $this->productRepository->getProducts($restaurantId);
     }
+
+    public function getProductByCategory(int $restaurantId, int $categoryId)
+    {
+        return $this->productRepository->getProductByCategory($restaurantId, $categoryId);
+    }
+
+    public function getAllProductCategories(int $restaurantId)
+    {
+        return $this->productRepository->getAllProductCategories($restaurantId);
+    }
 }

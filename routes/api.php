@@ -6,6 +6,7 @@ use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\RestaurantTableController;
+use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +27,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::put('/table/user', [RestaurantTableController::class, 'editUserRestaurantTable']);
     Route::post('/table', [RestaurantTableController::class, 'postRestaurantTable']);
     Route::get('/restaurants', [RestaurantController::class, 'getRestaurants']);
+    Route::get('/transaction', [TransactionController::class, 'getTransactions']);
     Route::get('/products', [ProductController::class, 'getProducts']);
     Route::get('/products/category', [ProductController::class, 'getProductByCategory']);
     Route::get('/products/filtered', [ProductController::class, 'getFilteredProducts']);

@@ -7,6 +7,8 @@ use App\Services\RefreshTokenService;
 use App\Services\RegisterService;
 use Illuminate\Http\Request;
 
+use function PHPUnit\Framework\isEmpty;
+
 class AuthController extends Controller
 {
     protected $registerService;
@@ -25,6 +27,10 @@ class AuthController extends Controller
     {
         $user = $this->registerService->register($request->all());
 
+        if (empty($user)) {
+            return response()->json(['message' => 'User already exists'], 409);
+        }
+
         return response()->json([
             'user' => $user,
             'message' => 'User registered successfully'
@@ -35,7 +41,7 @@ class AuthController extends Controller
     {
         $authData = $this->loginService->login($request->only('email', 'password'));
 
-        if (!$authData) {
+        if (empty($authData)) {
             return response()->json(['message' => 'Invalid credentials'], 401);
         }
 

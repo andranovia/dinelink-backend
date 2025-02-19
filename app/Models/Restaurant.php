@@ -10,4 +10,9 @@ class Restaurant extends Model
     {
         return $this->hasMany(RestaurantTable::class);
     }
+
+    public function transactions()
+    {
+        return $this->hasMany(Transaction::class);
+    }
 }

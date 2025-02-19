@@ -14,8 +14,15 @@ class RegisterService
         $this->userRepository = $userRepository;
     }
 
-    public function register(array $data): User
+    public function register(array $data): ?User
     {
+
+        $existingUser = $this->userRepository->findByEmail($data['email']);
+
+        if ($existingUser) {
+            return null;
+        }
+
         $data['password'] = bcrypt($data['password']);
 
         return $this->userRepository->create($data);

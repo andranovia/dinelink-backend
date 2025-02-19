@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Services\TransactionService;
 use Illuminate\Http\Request;
 use Stripe\Checkout\Session;
 use Stripe\PaymentIntent;
@@ -10,6 +11,15 @@ use Stripe\Stripe;
 
 class PaymentController extends Controller
 {
+
+    protected $transactionService;
+
+    public function __construct(TransactionService $transactionService)
+    {
+        $this->transactionService = $transactionService;
+    }
+
+
     public function getCheckout(Request $request)
     {
         Stripe::setApiKey(env('STRIPE_KEY'));
@@ -48,6 +58,23 @@ class PaymentController extends Controller
 
     public function postCheckout(Request $request)
     {
+
+        $userHasTransaction = $this->transactionService->getUserTransactions($request->user_id, $request->restaurant_id);
+
+        if ($userHasTransaction) {
+            return response()->json(['url' => $userHasTransaction->payment_url]);
+        }
+
+
+        $data = $request->only(['items', 'user_id', 'restaurant_id', 'total', 'subtotal', 'tax']);
+
+
+        if ($request->has('status')) {
+            $data['status'] = $request->status;
+        } else {
+            $data['status'] = 'Pending Payment';
+        }
+
         Stripe::setApiKey(env('STRIPE_KEY'));
 
         $purchased_products_array = [];
@@ -82,6 +109,11 @@ class PaymentController extends Controller
             'cancel_url' => env('FRONTEND_URL') . $request->current_url,
         ]);
 
-        return response()->json(['url' => $session->url]);
+        if ($session) {
+            $data['payment_url'] = $session->url;
+            $transactionData = $this->transactionService->postTransaction($data, $session->url);
+        }
+
+        return response()->json(['url' => $session->url, 'transactionData' => $transactionData]);
     }
 }

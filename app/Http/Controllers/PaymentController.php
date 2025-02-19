@@ -10,9 +10,9 @@ use Stripe\Stripe;
 
 class PaymentController extends Controller
 {
-    public function getCheckout($request)
+    public function getCheckout(Request $request)
     {
-        Stripe::setApiKey(env('STRIPE_SECRET'));
+        Stripe::setApiKey(env('STRIPE_KEY'));
 
         try {
             $session = Session::retrieve($request->sessionId);
@@ -78,7 +78,7 @@ class PaymentController extends Controller
             'payment_method_types' => ['card'],
             'line_items' => $line_items,
             'mode' => 'payment',
-            'success_url' => env('FRONTEND_URL') . '/payment/success/{CHECKOUT_SESSION_ID}',
+            'success_url' => env('FRONTEND_URL') . '/payment/{CHECKOUT_SESSION_ID}',
             'cancel_url' => env('FRONTEND_URL') . $request->current_url,
         ]);
 

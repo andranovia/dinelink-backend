@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use App\Services\RestaurantTableService;
 use Illuminate\Http\Request;
 
-use function PHPUnit\Framework\isEmpty;
-
 class RestaurantTableController extends Controller
 {
 
@@ -56,7 +54,7 @@ class RestaurantTableController extends Controller
 
     public function editUserRestaurantTable(Request $request)
     {
-        $data = $request->only('id', 'floor', 'number', 'seats', 'is_active');
+        $data = $request->only('id', 'floor', 'number', 'seats', 'is_active', 'persons', 'notes');
         $data['restaurant_id'] = $request->restaurant_id;
         $data['user_id'] = $request->user_id;
 

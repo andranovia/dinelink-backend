@@ -16,7 +16,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::post('checkout', [PaymentController::class, 'postCheckout']);
-    Route::get('checkout/{sessionId}', [PaymentController::class, 'getCheckout']);
+    Route::get('checkout', [PaymentController::class, 'getCheckout']);
     Route::get('/cart', [CartController::class, 'getUserCart']);
     Route::post('/cart', [CartController::class, 'postUserCart']);
     Route::put('/cart', [CartController::class, 'editUserCart']);

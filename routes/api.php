@@ -27,6 +27,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::put('/table/user', [RestaurantTableController::class, 'editUserRestaurantTable']);
     Route::post('/table', [RestaurantTableController::class, 'postRestaurantTable']);
     Route::get('/restaurants', [RestaurantController::class, 'getRestaurants']);
+    Route::get('/restaurant', [RestaurantController::class, 'getRestaurantByCode']);
+    Route::get('/restaurant/owner', [RestaurantController::class, 'getRestaurantByOwner']);
     Route::get('/transaction', [TransactionController::class, 'getTransactions']);
     Route::get('/products', [ProductController::class, 'getProducts']);
     Route::get('/products/category', [ProductController::class, 'getProductByCategory']);

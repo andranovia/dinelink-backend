@@ -11,4 +11,14 @@ class EloquentRestaurantRepository implements RestaurantRepositoryInterface
     {
         return Restaurant::all();
     }
+
+    public function getRestaurantByOwner(int $userId)
+    {
+        return Restaurant::where('user_id', $userId)->first();
+    }
+
+    public function getRestaurantByCode(string $code)
+    {
+        return Restaurant::where('code', $code)->first();
+    }
 }

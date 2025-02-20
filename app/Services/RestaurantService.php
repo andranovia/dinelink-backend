@@ -17,4 +17,14 @@ class RestaurantService
     {
         return $this->restaurantRepository->getAllRestaurants();
     }
+
+    public function getRestaurantByCode(string $code)
+    {
+        return $this->restaurantRepository->getRestaurantByCode($code);
+    }
+
+    public function getRestaurantByOwner(int $id)
+    {
+        return $this->restaurantRepository->getRestaurantByOwner($id);
+    }
 }

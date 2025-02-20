@@ -14,8 +14,10 @@ return new class extends Migration
         Schema::create('restaurants', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->foreignId('user_id')->nullable()->constrained();
             $table->string('email')->unique();
             $table->longText('img');
+            $table->string('code')->unique()->after('id');
             $table->string('password');
             $table->string('phone_number');
             $table->integer('rating');

@@ -8,7 +8,7 @@ use App\Repositories\Interfaces\CartRepositoryInterface;
 
 class EloquentCartRepository implements CartRepositoryInterface
 {
-    public function getUserCart(int $userId)
+    public function index(int $userId)
     {
         $cart = Cart::where('user_id', $userId)->get();
 
@@ -21,7 +21,7 @@ class EloquentCartRepository implements CartRepositoryInterface
 
 
 
-    public function postUserCart(int $userId, array $data)
+    public function store(int $userId, array $data)
     {
         return Cart::create([
             'user_id' => $userId,
@@ -32,7 +32,7 @@ class EloquentCartRepository implements CartRepositoryInterface
         ]);
     }
 
-    public function editUserCart(int $userId, int $productId, array $data)
+    public function update(int $userId, int $productId, array $data)
     {
         return Cart::where('user_id', $userId)->where('product_id', $productId)->update([
             'quantity' => $data['quantity'],
@@ -41,7 +41,7 @@ class EloquentCartRepository implements CartRepositoryInterface
         ]);
     }
 
-    public function deleteUserCart(int $userId, int $productId)
+    public function destroy(int $userId, int $productId)
     {
         return Cart::where('user_id', $userId)->where('product_id', $productId)->delete();
     }

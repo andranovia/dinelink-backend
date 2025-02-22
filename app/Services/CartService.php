@@ -13,23 +13,23 @@ class CartService
         $this->cartRepository = $cartRepository;
     }
 
-    public function getUserCart(int $userId)
+    public function index(int $userId)
     {
-        return $this->cartRepository->getUserCart($userId);
+        return $this->cartRepository->index($userId);
     }
 
-    public function postUserCart(int $userId, array $data)
+    public function store(int $userId, array $data)
     {
-        return $this->cartRepository->postUserCart($userId, $data);
+        return $this->cartRepository->store($userId, $data);
     }
 
-    public function editUserCart(int $userId, int $productId, array $data)
+    public function update(int $userId, int $productId, array $data)
     {
-        return $this->cartRepository->editUserCart($userId, $productId, $data);
+        return $this->cartRepository->update($userId, $productId, $data);
     }
 
-    public function deleteUserCart(int $userId, int $productId)
+    public function destroy(int $userId, int $productId)
     {
-        return $this->cartRepository->deleteUserCart($userId, $productId);
+        return $this->cartRepository->destroy($userId, $productId);
     }
 }

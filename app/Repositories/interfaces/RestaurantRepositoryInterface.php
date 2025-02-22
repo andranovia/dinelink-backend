@@ -6,7 +6,9 @@ interface RestaurantRepositoryInterface
 {
     public function getAllRestaurants();
 
-    public function getRestaurantByOwner(int $userId);
+    public function findByOwner(int $userId);
 
-    public function getRestaurantByCode(string $code);
+    public function findByCode(string $code);
+
+    public function sales(int $restaurantId);
 }

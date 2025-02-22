@@ -27,6 +27,10 @@ class AuthController extends Controller
     {
         $user = $this->registerService->register($request->all());
 
+        if ($user->type === "owner") {
+            $this->registerService->registerOwner($user);
+        }
+
         if (empty($user)) {
             return response()->json(['message' => 'User already exists'], 409);
         }

@@ -12,17 +12,17 @@ class EloquentRestaurantTableRepository implements RestaurantTableRepositoryInte
         return Restaurant::find($restaurantId)->tables;
     }
 
-    public function getRestaurantTablesByUserId(int $restaurantId, int $userId)
+    public function userTables(int $restaurantId, int $userId)
     {
         return Restaurant::find($restaurantId)->tables()->where('user_id', $userId)->get();
     }
 
-    public function postRestaurantTable(int $restaurantId, array $data)
+    public function store(int $restaurantId, array $data)
     {
         return Restaurant::find($restaurantId)->tables()->create($data);
     }
 
-    public function editUserRestaurantTable(int $restaurantId, int $userId, array $data)
+    public function updateUserTable(int $restaurantId, int $userId, array $data)
     {
         return Restaurant::find($restaurantId)->tables()->where('id', $data['id'])->update($data, ['user_id' => $userId]);
     }

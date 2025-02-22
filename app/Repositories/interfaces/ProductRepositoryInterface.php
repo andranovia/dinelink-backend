@@ -4,9 +4,9 @@ namespace App\Repositories\Interfaces;
 
 interface ProductRepositoryInterface
 {
-    public function getProducts(int $restaurantId);
+    public function index(int $restaurantId);
 
-    public function getProductByCategory(int $restaurantId, int $categoryId);
+    public function byCategory(int $restaurantId, int $categoryId);
 
-    public function getAllProductCategories(int $restaurantId);
+    public function categories(int $restaurantId);
 }

@@ -27,4 +27,9 @@ class RegisterService
 
         return $this->userRepository->create($data);
     }
+
+    public function registerOwner(User $data)
+    {
+        return $this->userRepository->createRestaurant($data);
+    }
 }

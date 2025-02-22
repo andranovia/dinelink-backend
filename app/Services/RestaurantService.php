@@ -18,13 +18,18 @@ class RestaurantService
         return $this->restaurantRepository->getAllRestaurants();
     }
 
-    public function getRestaurantByCode(string $code)
+    public function findByCode(string $code)
     {
-        return $this->restaurantRepository->getRestaurantByCode($code);
+        return $this->restaurantRepository->findByCode($code);
     }
 
-    public function getRestaurantByOwner(int $id)
+    public function sales(int $restaurantId)
     {
-        return $this->restaurantRepository->getRestaurantByOwner($id);
+        return $this->restaurantRepository->sales($restaurantId);
+    }
+
+    public function findByOwner(int $id)
+    {
+        return $this->restaurantRepository->findByOwner($id);
     }
 }

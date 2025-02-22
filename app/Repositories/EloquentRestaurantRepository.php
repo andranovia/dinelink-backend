@@ -12,13 +12,32 @@ class EloquentRestaurantRepository implements RestaurantRepositoryInterface
         return Restaurant::all();
     }
 
-    public function getRestaurantByOwner(int $userId)
+    public function findByOwner(int $userId)
     {
         return Restaurant::where('user_id', $userId)->first();
     }
 
-    public function getRestaurantByCode(string $code)
+    public function findByCode(string $code)
     {
         return Restaurant::where('code', $code)->first();
+    }
+
+    public function sales(int $restaurantId)
+    {
+        $restaurantData = Restaurant::find($restaurantId)->transactions()->get();
+
+        $restaurantSalesData = [
+            'total_sales' => 0,
+            'total_orders' => 0,
+            'total_customers' => 0,
+        ];
+
+        foreach ($restaurantData as $transaction) {
+            $restaurantSalesData['total_sales'] += $transaction->subtotal;
+            $restaurantSalesData['total_orders'] += 1;
+            $restaurantSalesData['total_customers'] += 1;
+        }
+
+        return $restaurantSalesData;
     }
 }

@@ -13,23 +13,23 @@ class RestaurantTableService
         $this->restaurantTableRepository = $restaurantTableRepository;
     }
 
-    public function getRestaurantTable(int $restaurantId)
+    public function index(int $restaurantId)
     {
         return $this->restaurantTableRepository->getRestaurantTables($restaurantId);
     }
 
-    public function getRestaurantTablesByUserId(int $restaurantId, int $userId)
+    public function userTables(int $restaurantId, int $userId)
     {
-        return $this->restaurantTableRepository->getRestaurantTablesByUserId($restaurantId, $userId);
+        return $this->restaurantTableRepository->userTables($restaurantId, $userId);
     }
 
-    public function postRestaurantTable(int $restaurantId, array $data)
+    public function store(int $restaurantId, array $data)
     {
-        return $this->restaurantTableRepository->postRestaurantTable($restaurantId, $data);
+        return $this->restaurantTableRepository->store($restaurantId, $data);
     }
 
-    public function editUserRestaurantTable(int $restaurantId, int $userId, array $data)
+    public function updateUserTable(int $restaurantId, int $userId, array $data)
     {
-        return $this->restaurantTableRepository->editUserRestaurantTable($restaurantId, $userId, $data);
+        return $this->restaurantTableRepository->updateUserTable($restaurantId, $userId, $data);
     }
 }

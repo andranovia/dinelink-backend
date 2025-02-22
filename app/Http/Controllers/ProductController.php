@@ -15,11 +15,11 @@ class ProductController extends Controller
         $this->productService = $productService;
     }
 
-    public function getProducts(Request $request)
+    public function index(Request $request)
     {
 
         $restaurantId = $request->restaurantId;
-        $products = $this->productService->getProducts($restaurantId);
+        $products = $this->productService->index($restaurantId);
 
         return response()->json(
             $products,
@@ -27,11 +27,11 @@ class ProductController extends Controller
         );
     }
 
-    public function getFilteredProducts(Request $request)
+    public function byCategory(Request $request)
     {
         $restaurantId = $request->restaurant_id;
         $categoryId = $request->category_id;
-        $products = $this->productService->getProductByCategory($restaurantId, $categoryId);
+        $products = $this->productService->byCategory($restaurantId, $categoryId);
 
         return response()->json(
             $products,
@@ -39,10 +39,10 @@ class ProductController extends Controller
         );
     }
 
-    public function getAllProductCategories(Request $request)
+    public function categories(Request $request)
     {
         $restaurantId = $request->restaurantId;
-        $products = $this->productService->getAllProductCategories($restaurantId);
+        $products = $this->productService->categories($restaurantId);
         $categoryData = [];
 
         foreach ($products as $product) {

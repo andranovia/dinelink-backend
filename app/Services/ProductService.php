@@ -13,18 +13,18 @@ class ProductService
         $this->productRepository = $productRepository;
     }
 
-    public function getProducts(int $restaurantId)
+    public function index(int $restaurantId)
     {
-        return $this->productRepository->getProducts($restaurantId);
+        return $this->productRepository->index($restaurantId);
     }
 
-    public function getProductByCategory(int $restaurantId, int $categoryId)
+    public function byCategory(int $restaurantId, int $categoryId)
     {
-        return $this->productRepository->getProductByCategory($restaurantId, $categoryId);
+        return $this->productRepository->byCategory($restaurantId, $categoryId);
     }
 
-    public function getAllProductCategories(int $restaurantId)
+    public function categories(int $restaurantId)
     {
-        return $this->productRepository->getAllProductCategories($restaurantId);
+        return $this->productRepository->categories($restaurantId);
     }
 }

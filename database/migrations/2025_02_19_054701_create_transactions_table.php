@@ -18,7 +18,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->foreignId('restaurant_id')->constrained()->onDelete('cascade');
             $table->string('status');
-            $table->string('payment_url');
+            $table->string('payment_url')->nullable();
             $table->integer('total');
             $table->integer('subtotal');
             $table->integer('tax');

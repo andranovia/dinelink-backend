@@ -7,7 +7,7 @@ use App\Repositories\Interfaces\ProductRepositoryInterface;
 
 class EloquentProductRepository implements ProductRepositoryInterface
 {
-    public function getProducts(int $restaurantId)
+    public function index(int $restaurantId)
     {
         $products = Product::where('restaurant_id', $restaurantId)->with('categories')->get();
         $productWithCategory = [];
@@ -42,12 +42,12 @@ class EloquentProductRepository implements ProductRepositoryInterface
         return $productWithCategory;
     }
 
-    public function getProductByCategory(int $restaurantId, int $categoryId)
+    public function byCategory(int $restaurantId, int $categoryId)
     {
         return Product::where('restaurant_id', $restaurantId)->where('category_id', $categoryId)->get();
     }
 
-    public function getAllProductCategories(int $restaurantId)
+    public function categories(int $restaurantId)
     {
         return Product::where('restaurant_id', $restaurantId)->with('categories')->get();
     }

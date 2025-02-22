@@ -10,32 +10,62 @@ use App\Http\Controllers\TransactionController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+// Authentication Routes
+Route::post('/register', [AuthController::class, 'register'])->name('auth.register');
+Route::post('/login', [AuthController::class, 'login'])->name('auth.login');
 
-Route::post('/register', [AuthController::class, 'register']);
-Route::post('/login', [AuthController::class, 'login']);
+// Protected Routes
+Route::middleware('auth:sanctum')->group(function () {
+    // Auth
+    Route::post('/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-Route::group(['middleware' => 'auth:sanctum'], function () {
-    Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('checkout', [PaymentController::class, 'postCheckout']);
-    Route::get('checkout', [PaymentController::class, 'getCheckout']);
-    Route::get('/cart', [CartController::class, 'getUserCart']);
-    Route::post('/cart', [CartController::class, 'postUserCart']);
-    Route::put('/cart', [CartController::class, 'editUserCart']);
-    Route::delete('/cart', [CartController::class, 'deleteUserCart']);
-    Route::get('/table', [RestaurantTableController::class, 'getRestaurantTable']);
-    Route::get('/table/user', [RestaurantTableController::class, 'getRestaurantTablesByUserId']);
-    Route::put('/table/user', [RestaurantTableController::class, 'editUserRestaurantTable']);
-    Route::post('/table', [RestaurantTableController::class, 'postRestaurantTable']);
-    Route::get('/restaurants', [RestaurantController::class, 'getRestaurants']);
-    Route::get('/restaurant', [RestaurantController::class, 'getRestaurantByCode']);
-    Route::get('/restaurant/owner', [RestaurantController::class, 'getRestaurantByOwner']);
-    Route::get('/transaction', [TransactionController::class, 'getTransactions']);
-    Route::get('/products', [ProductController::class, 'getProducts']);
-    Route::get('/products/category', [ProductController::class, 'getProductByCategory']);
-    Route::get('/products/filtered', [ProductController::class, 'getFilteredProducts']);
-    Route::get('/categories', [ProductController::class, 'getAllProductCategories']);
+    // User
+    Route::get('/user', function (Request $request) {
+        return $request->user();
+    })->name('user.profile');
+
+    // Cart
+    Route::prefix('cart')->name('cart.')->group(function () {
+        Route::get('/', [CartController::class, 'index']);
+        Route::post('/', [CartController::class, 'store']);
+        Route::put('/', [CartController::class, 'update']);
+        Route::delete('/', [CartController::class, 'destroy']);
+    });
+
+    // Checkout
+    Route::prefix('checkout')->name('checkout.')->group(function () {
+        Route::get('/', [PaymentController::class, 'index']);
+        Route::post('/', [PaymentController::class, 'store']);
+    });
+
+    // Restaurant Tables
+    Route::prefix('tables')->name('tables.')->group(function () {
+        Route::get('/', [RestaurantTableController::class, 'index']);
+        Route::post('/', [RestaurantTableController::class, 'store']);
+        Route::get('/user', [RestaurantTableController::class, 'userTables']);
+        Route::put('/user', [RestaurantTableController::class, 'updateUserTable']);
+    });
+
+    // Restaurants
+    Route::prefix('restaurants')->name('restaurants.')->group(function () {
+        Route::get('/', [RestaurantController::class, 'index']);
+        Route::get('/sales', [RestaurantController::class, 'sales']);
+        Route::get('/code', [RestaurantController::class, 'findByCode']);
+        Route::get('/owner', [RestaurantController::class, 'findByOwner']);
+    });
+
+    // Transactions
+    Route::prefix('transactions')->name('transactions.')->group(function () {
+        Route::get('/', [TransactionController::class, 'index']);
+        Route::post('/status', [TransactionController::class, 'updateStatus']);
+    });
+
+    // Products
+    Route::prefix('products')->name('products.')->group(function () {
+        Route::get('/', [ProductController::class, 'index']);
+        Route::get('/category', [ProductController::class, 'byCategory']);
+    });
+
+    // Categories
+    Route::get('/categories', [ProductController::class, 'categories'])->name('categories.index');
 });
-
-Route::get('/user', function (Request $request) {
-    return $request->user();
-})->middleware('auth:sanctum');

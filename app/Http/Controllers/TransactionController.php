@@ -15,8 +15,18 @@ class TransactionController extends Controller
         $this->transactionService = $transactionService;
     }
 
-    public function getTransactions(Request $request)
+    public function index(Request $request)
     {
-        return $this->transactionService->getUserTransactions($request->userId, $request->restaurantId);
+        return $this->transactionService->index($request->userId, $request->restaurantId);
+    }
+
+    public function updateStatus(Request $request)
+    {
+        return $this->transactionService->updateStatus($request->orderId, $request->status);
+    }
+
+    public function getRestaurantTransactions(Request $request)
+    {
+        return $this->transactionService->getRestaurantTransactions($request->restaurantId);
     }
 }

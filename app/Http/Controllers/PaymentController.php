@@ -20,7 +20,7 @@ class PaymentController extends Controller
     }
 
 
-    public function getCheckout(Request $request)
+    public function index(Request $request)
     {
         Stripe::setApiKey(env('STRIPE_KEY'));
 
@@ -42,8 +42,6 @@ class PaymentController extends Controller
                         'quantity' => $item->quantity,
                     ];
                 }
-
-
                 return response()->json([
                     'sessionId' => $session->id,
                     'customer_details' => $session->customer_details,
@@ -56,15 +54,10 @@ class PaymentController extends Controller
         }
     }
 
-    public function postCheckout(Request $request)
+    public function store(Request $request)
     {
 
-        $userHasTransaction = $this->transactionService->getUserTransactions($request->user_id, $request->restaurant_id);
-
-        if ($userHasTransaction) {
-            return response()->json(['url' => $userHasTransaction->payment_url]);
-        }
-
+        $userHasTransaction = $this->transactionService->index($request->user_id, $request->restaurant_id);
 
         $data = $request->only(['items', 'user_id', 'restaurant_id', 'total', 'subtotal', 'tax']);
 
@@ -101,19 +94,20 @@ class PaymentController extends Controller
             ];
         }
 
+        $transactionData = $this->transactionService->postTransaction($data);
+
+
         $session = Session::create([
             'payment_method_types' => ['card'],
             'line_items' => $line_items,
             'mode' => 'payment',
-            'success_url' => env('FRONTEND_URL') . '/payment/{CHECKOUT_SESSION_ID}',
+            'success_url' => env('FRONTEND_URL') . '/payment/{CHECKOUT_SESSION_ID}' . '?orderId=' . $transactionData->order_id,
             'cancel_url' => env('FRONTEND_URL') . $request->current_url,
         ]);
 
-        if ($session) {
-            $data['payment_url'] = $session->url;
-            $transactionData = $this->transactionService->postTransaction($data, $session->url);
-        }
+        $updatedTransaction = $this->transactionService->updateTransaction($transactionData->id, $session->url);
 
-        return response()->json(['url' => $session->url, 'transactionData' => $transactionData]);
+
+        return response()->json(['url' => $session->url, 'transactionData' => $updatedTransaction]);
     }
 }

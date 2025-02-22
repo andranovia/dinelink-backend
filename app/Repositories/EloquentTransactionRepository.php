@@ -8,9 +8,22 @@ use App\Repositories\Interfaces\TransactionRepositoryInterface;
 
 class EloquentTransactionRepository implements TransactionRepositoryInterface
 {
-    public function getUserTransactions(int $userId, int $restaurantId)
+    public function index(int $userId, int $restaurantId)
     {
         return Transaction::where('user_id', $userId)->where('restaurant_id', $restaurantId)->first();
+    }
+
+    public function updateStatus(string $orderId, string $status)
+    {
+        $transaction = Transaction::where('order_id', $orderId)->first();
+        $transaction->status = $status;
+        $transaction->save();
+        return $transaction;
+    }
+
+    public function getRestaurantTransactions(int $restaurantId)
+    {
+        return Transaction::where('restaurant_id', $restaurantId)->get();
     }
 
     public function postTransaction(array $data)
@@ -21,10 +34,17 @@ class EloquentTransactionRepository implements TransactionRepositoryInterface
             'user_id' => $data['user_id'],
             'restaurant_id' => $data['restaurant_id'],
             'status' => $data['status'],
-            'payment_url' => $data['payment_url'],
             'total' => $data['total'],
             'subtotal' => $data['subtotal'],
             'tax' => $data['tax'],
         ]);
+    }
+
+    public function updateTransaction(int $transactionId, string $paymentUrl)
+    {
+        $transaction = Transaction::find($transactionId);
+        $transaction->payment_url = $paymentUrl;
+        $transaction->save();
+        return $transaction;
     }
 }

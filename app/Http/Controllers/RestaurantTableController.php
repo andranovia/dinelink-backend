@@ -15,18 +15,18 @@ class RestaurantTableController extends Controller
         $this->restaurantTableService = $restaurantTableService;
     }
 
-    public function getRestaurantTable(Request $request)
+    public function index(Request $request)
     {
-        $restaurantTable = $this->restaurantTableService->getRestaurantTable($request->restaurant_id);
+        $restaurantTable = $this->restaurantTableService->index($request->restaurant_id);
 
         return response()->json([
             'restaurant_table' => $restaurantTable
         ], 200);
     }
 
-    public function getRestaurantTablesByUserId(Request $request)
+    public function userTables(Request $request)
     {
-        $restaurantTable = $this->restaurantTableService->getRestaurantTablesByUserId($request->restaurant_id, $request->user_id);
+        $restaurantTable = $this->restaurantTableService->userTables($request->restaurant_id, $request->user_id);
 
 
 
@@ -35,7 +35,7 @@ class RestaurantTableController extends Controller
         ], 200);
     }
 
-    public function postRestaurantTable(Request $request)
+    public function store(Request $request)
     {
 
         $data = $request->only('floor', 'number', 'seats', 'is_active');
@@ -45,20 +45,20 @@ class RestaurantTableController extends Controller
             $data['user_id'] = $request->user_id;
         }
 
-        $restaurantTable = $this->restaurantTableService->postRestaurantTable($data['restaurant_id'], $data);
+        $restaurantTable = $this->restaurantTableService->store($data['restaurant_id'], $data);
 
         return response()->json([
             'restaurant_table' => $restaurantTable
         ], 200);
     }
 
-    public function editUserRestaurantTable(Request $request)
+    public function updateUserTable(Request $request)
     {
         $data = $request->only('id', 'floor', 'number', 'seats', 'is_active', 'persons', 'notes');
         $data['restaurant_id'] = $request->restaurant_id;
         $data['user_id'] = $request->user_id;
 
-        $restaurantTable = $this->restaurantTableService->editUserRestaurantTable($data['restaurant_id'], $data['user_id'], $data);
+        $restaurantTable = $this->restaurantTableService->updateUserTable($data['restaurant_id'], $data['user_id'], $data);
 
         return response()->json([
             'restaurant_table' => $restaurantTable

@@ -11,7 +11,7 @@ class CartController extends Controller
     public function __construct(protected CartService $cartService) {}
 
 
-    public function getUserCart(Request $request)
+    public function index(Request $request)
     {
         if (!$request->has('user_id')) {
             return response()->json(
@@ -23,7 +23,7 @@ class CartController extends Controller
         }
 
         $userId = $request->user_id;
-        $cart = $this->cartService->getUserCart($userId);
+        $cart = $this->cartService->index($userId);
 
         return response()->json(
             [
@@ -33,11 +33,11 @@ class CartController extends Controller
         );
     }
 
-    public function postUserCart(Request $request)
+    public function store(Request $request)
     {
         $userId = $request->user_id;
         $data = $request->all();
-        $cart = $this->cartService->postUserCart($userId, $data);
+        $cart = $this->cartService->store($userId, $data);
 
         return response()->json(
             $cart,
@@ -45,12 +45,12 @@ class CartController extends Controller
         );
     }
 
-    public function editUserCart(Request $request)
+    public function update(Request $request)
     {
         $userId = $request->user_id;
         $productId = $request->product_id;
         $data = $request->all();
-        $cart = $this->cartService->editUserCart($userId, $productId, $data);
+        $cart = $this->cartService->update($userId, $productId, $data);
 
         return response()->json(
             $cart,
@@ -58,11 +58,11 @@ class CartController extends Controller
         );
     }
 
-    public function deleteUserCart(Request $request)
+    public function destroy(Request $request)
     {
         $userId = $request->user_id;
         $productId = $request->product_id;
-        $cart = $this->cartService->deleteUserCart($userId, $productId);
+        $cart = $this->cartService->destroy($userId, $productId);
 
         return response()->json(
             $cart,

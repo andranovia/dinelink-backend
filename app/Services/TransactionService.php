@@ -14,17 +14,31 @@ class TransactionService
         $this->transactionRepository = $transactionRepository;
     }
 
-    public function getUserTransactions(int $userId, $restaurantId)
+    public function updateStatus(string $orderId, string $status)
     {
-        return $this->transactionRepository->getUserTransactions($userId, $restaurantId);
+        return $this->transactionRepository->updateStatus($orderId, $status);
     }
 
-    public function postTransaction(array $data, string $sessionUrl)
+    public function index(int $userId, $restaurantId)
+    {
+        return $this->transactionRepository->index($userId, $restaurantId);
+    }
+
+    public function getRestaurantTransactions(int $restaurantId)
+    {
+        return $this->transactionRepository->getRestaurantTransactions($restaurantId);
+    }
+
+    public function postTransaction(array $data)
     {
 
         $data['order_id'] = Str::uuid();
-        $data['payment_url'] = $sessionUrl;
 
         return $this->transactionRepository->postTransaction($data);
+    }
+
+    public function updateTransaction(int $transactionId, string $paymentUrl)
+    {
+        return $this->transactionRepository->updateTransaction($transactionId, $paymentUrl);
     }
 }

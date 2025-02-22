@@ -15,7 +15,7 @@ class RestaurantController extends Controller
         $this->restaurantService = $restaurantService;
     }
 
-    public function getRestaurants()
+    public function index()
     {
         $restaurants = $this->restaurantService->getAllRestaurants();
 
@@ -24,20 +24,30 @@ class RestaurantController extends Controller
         ], 200);
     }
 
-    public function getRestaurantByCode(Request $request)
+    public function findByCode(Request $request)
     {
         $code = $request->code;
-        $restaurant = $this->restaurantService->getRestaurantByCode($code);
+        $restaurant = $this->restaurantService->findByCode($code);
 
         return response()->json([
             'restaurant' => $restaurant
         ], 200);
     }
 
-    public function getRestaurantByOwner(Request $request)
+    public function sales(Request $request)
+    {
+        $restaurantId = $request->restaurant_id;
+        $restaurantSalesData = $this->restaurantService->sales($restaurantId);
+
+        return response()->json([
+            'restaurant_sales_data' => $restaurantSalesData
+        ], 200);
+    }
+
+    public function findByOwner(Request $request)
     {
         $userId = $request->user_id;
-        $restaurant = $this->restaurantService->getRestaurantByOwner($userId);
+        $restaurant = $this->restaurantService->findByOwner($userId);
 
         return response()->json([
             'restaurant' => $restaurant

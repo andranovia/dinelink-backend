@@ -14,6 +14,11 @@ class TransactionService
         $this->transactionRepository = $transactionRepository;
     }
 
+    public function getUserTransactions(int $userId)
+    {
+        return $this->transactionRepository->getUserTransactions($userId);
+    }
+
     public function updateStatus(string $orderId, string $status)
     {
         return $this->transactionRepository->updateStatus($orderId, $status);
@@ -24,9 +29,9 @@ class TransactionService
         return $this->transactionRepository->index($userId, $restaurantId);
     }
 
-    public function getRestaurantTransactions(int $restaurantId)
+    public function findByRestaurant(int $restaurantId)
     {
-        return $this->transactionRepository->getRestaurantTransactions($restaurantId);
+        return $this->transactionRepository->findByRestaurant($restaurantId);
     }
 
     public function postTransaction(array $data)

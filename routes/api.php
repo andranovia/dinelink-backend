@@ -42,6 +42,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::prefix('tables')->name('tables.')->group(function () {
         Route::get('/', [RestaurantTableController::class, 'index']);
         Route::post('/', [RestaurantTableController::class, 'store']);
+        Route::put('/cancel', [RestaurantTableController::class, 'cancelUserTable']);
+        Route::put('/', [RestaurantTableController::class, 'editTable']);
+        Route::delete('/floor', [RestaurantTableController::class, 'deleteFloor']);
+        Route::put('/floor', [RestaurantTableController::class, 'editFloor']);
+        Route::post('/floor', [RestaurantTableController::class, 'postFloor']);
+        Route::get('/floor', [RestaurantTableController::class, 'getFloor']);
         Route::get('/user', [RestaurantTableController::class, 'userTables']);
         Route::put('/user', [RestaurantTableController::class, 'updateUserTable']);
     });
@@ -49,6 +55,13 @@ Route::middleware('auth:sanctum')->group(function () {
     // Restaurants
     Route::prefix('restaurants')->name('restaurants.')->group(function () {
         Route::get('/', [RestaurantController::class, 'index']);
+        Route::put('/status', [RestaurantController::class, 'restaurantStatus']);
+        Route::get('/categories', [RestaurantController::class, 'categories']);
+        Route::get('/rating', [RestaurantController::class, 'rating']);
+        Route::post('/rating', [RestaurantController::class, 'postRating']);
+        Route::post('/rating/toggle', [RestaurantController::class, 'ratingToggle']);
+        Route::post('/categories', [RestaurantController::class, 'postCategory']);
+        Route::put('/edit', [RestaurantController::class, 'editRestaurant']);
         Route::get('/sales', [RestaurantController::class, 'sales']);
         Route::get('/code', [RestaurantController::class, 'findByCode']);
         Route::get('/owner', [RestaurantController::class, 'findByOwner']);
@@ -57,12 +70,18 @@ Route::middleware('auth:sanctum')->group(function () {
     // Transactions
     Route::prefix('transactions')->name('transactions.')->group(function () {
         Route::get('/', [TransactionController::class, 'index']);
+        Route::get('/user', [TransactionController::class, 'getUserTransactions']);
         Route::post('/status', [TransactionController::class, 'updateStatus']);
+        Route::get('/restaurant', [TransactionController::class, 'findByRestaurant']);
     });
 
     // Products
     Route::prefix('products')->name('products.')->group(function () {
         Route::get('/', [ProductController::class, 'index']);
+        Route::post('/', [ProductController::class, 'store']);
+        Route::delete('/', [ProductController::class, 'delete']);
+        Route::put('/status', [ProductController::class, 'status']);
+        Route::put('/{product_id}', [ProductController::class, 'update']);
         Route::get('/category', [ProductController::class, 'byCategory']);
     });
 

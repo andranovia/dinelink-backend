@@ -18,6 +18,26 @@ class ProductService
         return $this->productRepository->index($restaurantId);
     }
 
+    public function store(array $data, string $imagePath)
+    {
+        return $this->productRepository->store($data, $imagePath);
+    }
+
+    public function update(array $data, int $product_id)
+    {
+        return $this->productRepository->update($data, $product_id);
+    }
+
+    public function delete(int $id)
+    {
+        return $this->productRepository->delete($id);
+    }
+
+    public function status(int $id)
+    {
+        return $this->productRepository->status($id);
+    }
+
     public function byCategory(int $restaurantId, int $categoryId)
     {
         return $this->productRepository->byCategory($restaurantId, $categoryId);

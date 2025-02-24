@@ -2,7 +2,9 @@
 
 namespace App\Repositories;
 
+use App\Models\Restaurant;
 use App\Models\Transaction;
+use App\Models\User;
 use Illuminate\Support\Str;
 use App\Repositories\Interfaces\TransactionRepositoryInterface;
 
@@ -21,9 +23,27 @@ class EloquentTransactionRepository implements TransactionRepositoryInterface
         return $transaction;
     }
 
-    public function getRestaurantTransactions(int $restaurantId)
+    public function getUserTransactions(int $userId)
     {
-        return Transaction::where('restaurant_id', $restaurantId)->get();
+        $transactions = Transaction::where('user_id', $userId)->get();
+
+        foreach ($transactions as $transaction) {
+            $transaction['restaurant'] = Restaurant::find($transaction->restaurant_id);
+            $transaction['user'] = User::find($transaction->user_id);
+        }
+
+        return $transactions;
+    }
+
+    public function findByRestaurant(int $restaurantId)
+    {
+        $transactions = Transaction::where('restaurant_id', $restaurantId)->get();
+
+        foreach ($transactions as $transaction) {
+            $transaction['user'] = User::find($transaction->user_id);
+        }
+
+        return $transactions;
     }
 
     public function postTransaction(array $data)

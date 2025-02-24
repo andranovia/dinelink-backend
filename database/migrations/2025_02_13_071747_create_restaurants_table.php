@@ -17,11 +17,11 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained();
             $table->string('email')->unique();
             $table->longText('img')->nullable();
+            $table->string('description')->nullable();
             $table->string('code')->unique()->after('id');
             $table->string('phone_number')->nullable();
             $table->integer('rating')->nullable();
             $table->string('address')->nullable();
-            $table->string('logo')->nullable();
             $table->boolean('open');
             $table->timestamps();
         });

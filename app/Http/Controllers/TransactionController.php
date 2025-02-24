@@ -20,13 +20,18 @@ class TransactionController extends Controller
         return $this->transactionService->index($request->userId, $request->restaurantId);
     }
 
+    public function getUserTransactions(Request $request)
+    {
+        return $this->transactionService->getUserTransactions($request->userId);
+    }
+
     public function updateStatus(Request $request)
     {
         return $this->transactionService->updateStatus($request->orderId, $request->status);
     }
 
-    public function getRestaurantTransactions(Request $request)
+    public function findByRestaurant(Request $request)
     {
-        return $this->transactionService->getRestaurantTransactions($request->restaurantId);
+        return $this->transactionService->findByRestaurant($request->restaurantId);
     }
 }

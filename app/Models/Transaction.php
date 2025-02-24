@@ -28,6 +28,6 @@ class Transaction extends Model
 
     public function users()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class, 'transaction_user_restaurants', 'transaction_id', 'user_id');
     }
 }

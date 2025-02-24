@@ -24,6 +24,67 @@ class RestaurantController extends Controller
         ], 200);
     }
 
+    public function categories(Request $request)
+    {
+        $restaurantId = $request->restaurant_id;
+        $categories = $this->restaurantService->restaurantCategories($restaurantId);
+
+        return response()->json([
+            'categories' => $categories
+        ], 200);
+    }
+
+    public function rating(Request $request)
+    {
+        $restaurantId = $request->restaurant_id;
+        $rating = $this->restaurantService->rating($restaurantId);
+
+        return response()->json([
+            'rating' => $rating
+        ], 200);
+    }
+
+    public function ratingToggle(Request $request)
+    {
+        $ratingId = $request->id;
+        $show = $request->show;
+        $rating = $this->restaurantService->ratingToggle($ratingId, $show);
+
+        return response()->json([
+            'rating' => $rating
+        ], 200);
+    }
+
+    public function restaurantStatus(Request $request)
+    {
+        $restaurantId = $request->restaurant_id;
+        $status = $this->restaurantService->restaurantStatus($restaurantId);
+
+        return response()->json([
+            'status' => $status
+        ], 200);
+    }
+
+    public function postRating(Request $request)
+    {
+        $data = $request->all();
+        $rating = $this->restaurantService->postRating($data);
+
+        return response()->json([
+            'rating' => $rating
+        ], 200);
+    }
+
+    public function postCategory(Request $request)
+    {
+        $data = $request->data;
+        $category = $this->restaurantService->postRestaurantCategory($data);
+
+        return response()->json([
+            'category' => $category
+        ], 200);
+    }
+
     public function findByCode(Request $request)
     {
         $code = $request->code;
@@ -48,6 +109,17 @@ class RestaurantController extends Controller
     {
         $userId = $request->user_id;
         $restaurant = $this->restaurantService->findByOwner($userId);
+
+        return response()->json([
+            'restaurant' => $restaurant
+        ], 200);
+    }
+
+    public function editRestaurant(Request $request)
+    {
+        $data = $request->data;
+        $restaurantId = $request->restaurant_id;
+        $restaurant = $this->restaurantService->editRestaurant($data, $restaurantId);
 
         return response()->json([
             'restaurant' => $restaurant

@@ -42,6 +42,40 @@ class EloquentProductRepository implements ProductRepositoryInterface
         return $productWithCategory;
     }
 
+    public function store(array $data, string $imagePath)
+    {
+        return Product::create([
+            'name' => $data['name'],
+            'description' => $data['description'],
+            'image' => $imagePath,
+            'category_id' => $data['category_id'],
+            'price' => $data['price'],
+            'restaurant_id' => $data['restaurant_id'],
+        ]);
+    }
+
+    public function update(array $data, int $product_id)
+    {
+        $product = Product::find($product_id);
+        $product->update($data);
+
+        return $product;
+    }
+
+    public function delete(int $id)
+    {
+        return Product::destroy($id);
+    }
+
+    public function status(int $id)
+    {
+        $product = Product::find($id);
+        $product->available = !$product->available;
+        $product->save();
+
+        return $product;
+    }
+
     public function byCategory(int $restaurantId, int $categoryId)
     {
         return Product::where('restaurant_id', $restaurantId)->where('category_id', $categoryId)->get();

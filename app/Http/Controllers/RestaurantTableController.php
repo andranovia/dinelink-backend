@@ -35,10 +35,47 @@ class RestaurantTableController extends Controller
         ], 200);
     }
 
+    public function getFloor(Request $request)
+    {
+        $restaurantFloor = $this->restaurantTableService->getFloor($request->restaurant_id);
+
+        return response()->json([
+            'restaurant_floor' => $restaurantFloor
+        ], 200);
+    }
+
+    public function postFloor(Request $request)
+    {
+
+        $restaurantTable = $this->restaurantTableService->postFloor($request->restaurant_id, $request->number);
+
+        return response()->json([
+            'restaurant_table' => $restaurantTable
+        ], 200);
+    }
+
+    public function deleteFloor(Request $request)
+    {
+        $restaurantTable = $this->restaurantTableService->deleteFloor($request->restaurant_id, $request->floor_id);
+
+        return response()->json([
+            'restaurant_table' => $restaurantTable
+        ], 200);
+    }
+
+    public function editFloor(Request $request)
+    {
+        $restaurantTable = $this->restaurantTableService->editFloor($request->restaurant_id, $request->floor_id, $request->number);
+
+        return response()->json([
+            'restaurant_table' => $restaurantTable
+        ], 200);
+    }
+
     public function store(Request $request)
     {
 
-        $data = $request->only('floor', 'number', 'seats', 'is_active');
+        $data = $request->only('floor_id', 'number', 'seats', 'is_active');
         $data['restaurant_id'] = $request->restaurant_id;
 
         if ($request->has('user_id')) {
@@ -46,6 +83,27 @@ class RestaurantTableController extends Controller
         }
 
         $restaurantTable = $this->restaurantTableService->store($data['restaurant_id'], $data);
+
+        return response()->json([
+            'restaurant_table' => $restaurantTable
+        ], 200);
+    }
+
+    public function cancelUserTable(Request $request)
+    {
+        $restaurantTable = $this->restaurantTableService->cancelUserTable($request->restaurant_id, $request->user_id, $request->table_id);
+
+        return response()->json([
+            'restaurant_table' => $restaurantTable
+        ], 200);
+    }
+
+    public function editTable(Request $request)
+    {
+        $data = $request->only('id', 'number', 'seats');
+        $data['restaurant_id'] = $request->restaurant_id;
+
+        $restaurantTable = $this->restaurantTableService->editTable($data['restaurant_id'], $data['id'], $data);
 
         return response()->json([
             'restaurant_table' => $restaurantTable

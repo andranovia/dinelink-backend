@@ -12,7 +12,13 @@ class EloquentTransactionRepository implements TransactionRepositoryInterface
 {
     public function index(int $userId, int $restaurantId)
     {
-        return Transaction::where('user_id', $userId)->where('restaurant_id', $restaurantId)->first();
+        return Transaction::where('user_id', $userId)
+            ->where('restaurant_id', $restaurantId)
+            ->where(function ($query) {
+                $query->where('status', 'Pending Payment')
+                    ->orWhere('status', 'Pending Confirmation');
+            })
+            ->first();
     }
 
     public function updateStatus(string $orderId, string $status)

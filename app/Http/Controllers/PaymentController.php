@@ -57,8 +57,6 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
 
-        $userHasTransaction = $this->transactionService->index($request->user_id, $request->restaurant_id);
-
         $data = $request->only(['items', 'user_id', 'restaurant_id', 'total', 'subtotal', 'tax']);
 
 

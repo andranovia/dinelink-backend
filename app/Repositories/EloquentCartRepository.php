@@ -23,6 +23,14 @@ class EloquentCartRepository implements CartRepositoryInterface
 
     public function store(int $userId, array $data)
     {
+        $cart = Cart::where('user_id', $userId)->where('product_id', $data['product_id'])->first();
+
+        if ($cart) {
+            $cart->quantity += $data['quantity'];
+            $cart->save();
+            return $cart;
+        }
+
         return Cart::create([
             'user_id' => $userId,
             'product_id' => $data['product_id'],
